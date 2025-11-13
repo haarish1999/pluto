@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprofile-app-deploy
+  labels:
+    app: vprofile-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vprofile-app
+  template:
+    metadata:
+      labels:
+        app: vprofile-app
+    spec:
+      containers:
+      - name: vpro-app
+        image: haarish1999/vproapp:latest
+        ports:
+        - containerPort: 8080
+          name: vprofile-app-port
+        volumeMounts:
+        - name: vprofile-app-volume
+          mountPath: /usr/local/tomcat/webapps
