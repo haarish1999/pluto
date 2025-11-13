@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vprofile-db-svc
+  name: vprodb
   labels:
     app: vprofile-db
 spec:
