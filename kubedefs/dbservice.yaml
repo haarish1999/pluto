@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vprofile-db-svc
+  labels:
+    app: vprofile-db
+spec:
+  selector:
+    app: vprofile-db
+  ports:
+  - port: 3306
+    targetPort: vprofile-db-port
+    protocol: TCP
+  type: ClusterIP
