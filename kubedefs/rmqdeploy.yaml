@@ -1,31 +1,31 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vpromq01
   labels:
-    app: vpro-rmq
+    app: vpromq01
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: vpro-rmq
+      app: vpromq01
+  replicas: 1
   template:
     metadata:
       labels:
-        app: vpro-rmq
+        app: vpromq01
     spec:
       containers:
-      - name: vpro-rmq
+      - name: vpromq01
         image: rabbitmq
         ports:
-        - containerPort: 5672
-          name: vpro-rmq-port
-        env:
-        - name: RABBITMQ_DEFAULT_PASS
-          valuefrom:
-            secretKeyRef:
-              name: vpro-secret
-              key: rmq-pass
-        - name: RABBITMQ_DEFAULT_USER
-          value: "guest"
+        - name: vpromq01-port
+          containerPort: 5672
+        env: 
+         - name: RABBITMQ_DEFAULT_PASS
+           valueFrom:
+             secretKeyRef:
+               name: vpro-secret
+               key: rmq-pass
+         - name: RABBITMQ_DEFAULT_USER
+           value: "guest"
+
