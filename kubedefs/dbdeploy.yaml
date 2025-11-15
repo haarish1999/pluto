@@ -28,7 +28,7 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           valuefrom:
             secretKeyRef:
-              name: vprofile-secret
+              name: vpro-secret
               key: db-pass
       volumes:
       - name: vpro-db-vol
