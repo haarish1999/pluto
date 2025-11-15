@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,10 +5,10 @@ metadata:
   labels:
     app: vpro-db
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: vpro-db
+  replicas: 1
   template:
     metadata:
       labels:
@@ -19,25 +18,26 @@ spec:
       - name: vpro-db
         image: haarish1999/vprodb:latest
         volumeMounts:
-        - name: vpro-db-vol
-          mountPath: /var/lib/mysql
+        - mountPath: /var/lib/mysql
+          name: vpro-db-data
         ports:
-        - containerPort: 3306
-          name: vpro-db-port
+        - name: vpro-db-port
+          containerPort: 3306
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          valuefrom:
-            secretKeyRef:
-              name: vpro-secret
-              key: db-pass
+         - name: MYSQL_ROOT_PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: vpro-secret
+               key: db-pass
       volumes:
-      - name: vpro-db-vol
-        persistentVolumeClaim:
-          claimName: vpro-db-pvc
-      initcontainers:
-      - name: init-mysqldb
-        image: busybox
-        args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
-        volumeMounts:
-        - name: vpro-db-vol
-          mountPath: /var/lib/mysql
+        - name: vpro-db-data
+          persistentVolumeClaim:
+            claimName: vpro-db-pvc
+
+      initContainers:
+        - name: busybox
+          image: busybox:latest
+          command: ["sh", "-c", "rm -rf /var/lib/mysql/lost+found"]
+          volumeMounts:
+            - name: vpro-db-data
+              mountPath: /var/lib/mysql

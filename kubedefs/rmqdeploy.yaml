@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vpro-rmq-dep
+  name: vpromq01
   labels:
     app: vpro-rmq
 spec:
