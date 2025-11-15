@@ -2,25 +2,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vprofile-app-deploy
+  name: vpro-app-dep
   labels:
-    app: vprofile-app
+    app: vpro-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: vprofile-app
+      app: vpro-app
   template:
     metadata:
       labels:
-        app: vprofile-app
+        app: vpro-app
     spec:
       containers:
       - name: vpro-app
         image: haarish1999/vproapp:latest
         ports:
         - containerPort: 8080
-          name: vprofile-app-port
-        volumeMounts:
-        - name: vprofile-app-volume
-          mountPath: /usr/local/tomcat/webapps
+          name: vpro-app-port
+      initcontainers:
+      - name: init-db
+        image: busybox
+        command: ['sh', '-c', 'until nslookup vprodb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for dbservice; sleep 2; done;']
+      - name: init-rmq
+        image: busybox
+        command: ['sh', '-c', 'until nslookup vpromq01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done;']
+      - name: init-mc
+        image: busybox
+        command: ['sh', '-c', 'until nslookup vprocache01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done;']
+      
+      

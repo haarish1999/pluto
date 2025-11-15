@@ -2,28 +2,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vprofile-db-deploy
+  name: vpro-db-dep
   labels:
-    app: vprofile-db
+    app: vpro-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: vprofile-db
+      app: vpro-db
   template:
     metadata:
       labels:
-        app: vprofile-db
+        app: vpro-db
     spec:
       containers:
       - name: vpro-db
         image: haarish1999/vprodb:latest
         volumeMounts:
-        - name: vprofile-db-volume
+        - name: vpro-db-vol
           mountPath: /var/lib/mysql
         ports:
         - containerPort: 3306
-          name: vprofile-db-port
+          name: vpro-db-port
         env:
         - name: MYSQL_ROOT_PASSWORD
           valuefrom:
@@ -31,13 +31,13 @@ spec:
               name: vprofile-secret
               key: db-pass
       volumes:
-      - name: vprofile-db-volume
+      - name: vpro-db-vol
         persistentVolumeClaim:
-          claimName: vprofile-db-pvc
+          claimName: vpro-db-pvc
       initcontainers:
       - name: init-mysqldb
         image: busybox
         args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
         volumeMounts:
-        - name: vprofile-db-volume
+        - name: vpro-db-vol
           mountPath: /var/lib/mysql

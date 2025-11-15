@@ -15,6 +15,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: vprofile-app-svc
+            name: vpro-app-svc
             port: 
               number: 8080

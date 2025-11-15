@@ -4,12 +4,12 @@ kind: Service
 metadata:
   name: vprodb
   labels:
-    app: vprofile-db
+    app: vpro-db
 spec:
   selector:
-    app: vprofile-db
+    app: vpro-db
   ports:
   - port: 3306
-    targetPort: vprofile-db-port
+    targetPort: vpro-db-port
     protocol: TCP
   type: ClusterIP
